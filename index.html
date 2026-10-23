@@ -2,70 +2,111 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#07111f">
-<meta name="description" content="FX SENTINEL — surveillance crypto Spot, signaux informatifs et simulation uniquement.">
-<title>FX SENTINEL | Crypto Sentinel</title>
+<meta name="description" content="FX SENTINEL — surveillance de marchés, signaux informatifs et simulation uniquement.">
+<title>FX SENTINEL | Sentinel Mobile V2</title>
 <style>
-:root{color-scheme:dark;--bg:#07111f;--panel:#0d1a2b;--panel2:#102239;--line:#20354e;--text:#edf5ff;--muted:#8da4bd;--green:#38e0a1;--red:#ff6f7d;--blue:#55aaff;--gold:#f4c96b}
+:root{color-scheme:dark;--bg:#07111f;--panel:#0d1a2b;--panel2:#102239;--line:#20354e;--text:#edf5ff;--muted:#8da4bd;--green:#38e0a1;--red:#ff6f8d;--blue:#55aaff;--gold:#f4c96b}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#102845 0,#07111f 48%);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-.wrap{max-width:1200px;margin:auto;padding:18px 14px 40px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#46f0b0,#1688ff);display:grid;place-items:center;color:#04111e;font-weight:1000;font-size:20px;box-shadow:0 0 28px #1688ff35}
-h1{font-size:19px;letter-spacing:1.7px;margin:0}.sub{color:var(--muted);font-size:12px}.status{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.dot{width:8px;height:8px;background:var(--gold);border-radius:50%}.dot.ok{background:var(--green);box-shadow:0 0 10px #38e0a1aa}.dot.bad{background:var(--red)}
+.wrap{max-width:1150px;margin:auto;padding:18px 14px 48px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}.brand{display:flex;gap:11px;align-items:center}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#46f0b0,#1688ff);display:grid;place-items:center;color:#04111e;font-weight:1000;font-size:20px;box-shadow:0 0 28px #1688ff35}h1{font-size:19px;letter-spacing:1.7px;margin:0}.sub{color:var(--muted);font-size:12px}.status{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.dot{width:8px;height:8px;border-radius:50%;background:var(--gold)}.dot.ok{background:var(--green);box-shadow:0 0 10px #38e0a1aa}.dot.bad{background:var(--red)}
 .notice{border:1px solid #3b5b79;background:#10243a;padding:11px 13px;border-radius:12px;color:#bfd2e8;font-size:12px;margin-bottom:14px}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}.metric,.panel{border:1px solid var(--line);background:linear-gradient(160deg,#102239ee,#0a1727ee);border-radius:15px;padding:14px;min-width:0}.metric .label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px}.metric .value{font-size:23px;font-weight:800;margin-top:7px;white-space:nowrap}.metric .hint{font-size:11px;color:var(--muted);margin-top:2px}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar input,.toolbar select,.toolbar button{background:#0b1929;border:1px solid #2a4058;color:var(--text);border-radius:10px;padding:11px 12px;font:inherit}.toolbar input{flex:1;min-width:140px}.toolbar select{min-width:125px}.toolbar button{cursor:pointer}.toolbar button.primary{background:#1b8a76;border-color:#2bbf9d;font-weight:700}
-.panelhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.panelhead h2{font-size:14px;margin:0}.pill{border:1px solid var(--line);border-radius:99px;padding:4px 8px;color:var(--muted);font-size:11px}
-.tablewrap{overflow:auto;border-radius:10px}table{border-collapse:collapse;width:100%;min-width:570px;font-variant-numeric:tabular-nums}th,td{padding:12px 10px;text-align:right;border-bottom:1px solid #1b2c40;white-space:nowrap}th{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.5px;font-weight:600}th:first-child,td:first-child{text-align:left}.coin{font-weight:750}.symbol{font-size:11px;color:var(--muted);margin-left:6px}.pos{color:var(--green)}.neg{color:var(--red)}.empty{text-align:center!important;color:var(--muted);padding:28px!important}.foot{color:var(--muted);font-size:11px;margin-top:13px}.lower{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-top:12px}.signal{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #1b2c40;padding:10px 0}.signal:last-child{border:0}.signal strong{font-size:12px}.signal small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.tag{border-radius:7px;padding:4px 7px;font-size:10px;font-weight:800;align-self:center}.tag.wait{color:var(--gold);background:#f4c96b18}.tag.info{color:var(--blue);background:#55aaff18}.risk{color:#c6d4e4;font-size:12px;padding-left:17px;margin:8px 0}.risk li{margin:7px 0}
-@media(max-width:650px){.wrap{padding:13px 10px 28px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric .value{font-size:20px}.lower{grid-template-columns:1fr}.brand h1{font-size:17px}.status{width:100%}}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}.metric,.panel{border:1px solid var(--line);background:linear-gradient(160deg,#102239ee,#0a1727ee);border-radius:15px;padding:14px;min-width:0}.label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px}.value{font-size:23px;font-weight:800;margin-top:7px;white-space:nowrap}.hint{font-size:11px;color:var(--muted);margin-top:2px}.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--blue)}.gold{color:var(--gold)}
+.panel{margin-bottom:14px}.panelhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.panel h2{font-size:14px;letter-spacing:.5px;margin:0}.tag{border:1px solid var(--line);border-radius:999px;padding:4px 8px;color:var(--muted);font-size:11px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar input,.toolbar select,.toolbar button,.btn{background:#0b1929;border:1px solid #2a4058;color:var(--text);border-radius:10px;padding:11px 12px;font:inherit}.toolbar input{flex:1;min-width:140px}.toolbar select{min-width:120px}.toolbar button,.btn{cursor:pointer}.primary{background:#1b8a76!important;border-color:#2bbf9d!important;font-weight:800}.danger{background:#8c2946!important;border-color:#bd4966!important}.mutebtn{background:#18283c!important}.disabled{opacity:.5}
+.auto-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:12px}.auto-state{font-size:21px;font-weight:850;margin:5px 0}.auto-desc{color:var(--muted);font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.mini{font-size:11px;color:var(--muted);margin-top:9px}.markets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.marketbox{background:#08162b;border:1px solid #183654;border-radius:14px;padding:12px;min-height:125px;position:relative;overflow:hidden}.orbit{height:85px;position:relative;display:flex;align-items:center;justify-content:center;margin:4px 0}.orb{width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#0b8effaa,#00357b33 58%,transparent 72%);position:relative;animation:pulse 3s infinite}.orb:before,.orb:after{content:"";position:absolute;border:1px dotted #168bff99;border-radius:50%;inset:-13px;transform:rotate(30deg) scaleY(.45)}.orb:after{inset:-20px;transform:rotate(-25deg) scaleY(.45)}.beam{position:absolute;width:75px;height:18px;left:calc(50% - 70px);top:40px;background:linear-gradient(90deg,transparent,#168bff77,transparent);transform:rotate(-20deg);animation:sweep 4s infinite}.orb.goldorb{background:radial-gradient(circle,#f4c96bcc,#f4c96b22 60%,transparent 72%)}.orb.goldorb:before,.orb.goldorb:after{border-color:#f4c96b99}.marketname{font-weight:800}.marketstats{font-size:11px;color:var(--muted)}@keyframes pulse{50%{filter:brightness(1.5);transform:scale(1.04)}}@keyframes sweep{50%{transform:translateX(28px) rotate(15deg)}}
+.progress{height:9px;background:#203d6b;border-radius:999px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,#35dca3,#55aaff);width:0%}.goalrow{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}.goalamount{font-size:28px;font-weight:900;color:var(--green)}.results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.result{padding:12px;border-radius:12px;background:#18325c}.result .v{font-size:19px;font-weight:850;margin-top:5px}.tablewrap{overflow:auto;border-radius:10px}table{border-collapse:collapse;width:100%;min-width:570px;font-variant-numeric:tabular-nums}th,td{padding:11px 10px;text-align:right;border-bottom:1px solid #1b2c40;white-space:nowrap}th{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.5px}th:first-child,td:first-child{text-align:left}.coin{font-weight:750}.symbol{font-size:11px;color:var(--muted);margin-left:6px}.empty{text-align:center!important;color:var(--muted);padding:28px!important}.footer{color:var(--muted);font-size:11px;text-align:center;margin:22px 0}.signal-list{display:grid;gap:8px}.signal{border:1px solid var(--line);background:#0b1929;border-radius:11px;padding:10px 12px;display:flex;justify-content:space-between;gap:10px;align-items:center}.signal strong{display:block}.signal small{color:var(--muted)}.pill{font-size:10px;padding:4px 7px;border-radius:999px;background:#173b55;color:#9dd7ff;white-space:nowrap}
+@media(max-width:720px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-grid{grid-template-columns:1fr}.markets{grid-template-columns:1fr}.marketbox{min-height:110px}.orbit{height:72px}.results{grid-template-columns:repeat(2,minmax(0,1fr))}.value{font-size:21px}.wrap{padding:13px 10px 35px}}
 </style>
 </head>
 <body><main class="wrap">
-<header class="top"><div class="brand"><div class="logo">F</div><div><h1>FX SENTINEL</h1><div class="sub">CRYPTO INTELLIGENCE · SPOT · V1</div></div></div><div class="status"><span id="dot" class="dot"></span><span id="connection">Connexion en cours…</span><span>·</span><span id="updated">—</span></div></header>
-<div class="notice">MODE OBSERVATION — Données publiques Binance Spot. Aucun ordre réel n’est envoyé. Les signaux sont informatifs et ne constituent pas un conseil financier.</div>
+<header class="top"><div class="brand"><div class="logo">FS</div><div><h1>FX SENTINEL</h1><div class="sub">SENTINEL MOBILE · V2 · OBSERVATION & SIMULATION</div></div></div><div class="status"><span class="dot" id="connectionDot"></span><span id="connectionText">Connexion aux données publiques…</span></div></header>
+<div class="notice"><strong>MODE SÛR —</strong> Aucun ordre réel, aucune clé API privée et aucun retrait. Les cours crypto viennent de l’API publique Binance. Forex/Bourse sont en démonstration tant qu’une source publique fiable n’est pas configurée. Une page ouverte ne garantit pas une surveillance 24 h/24.</div>
 <section class="grid">
-<div class="metric"><div class="label">Marchés chargés</div><div class="value" id="marketCount">—</div><div class="hint">Paires Spot USDT visibles</div></div>
-<div class="metric"><div class="label">Marchés en hausse</div><div class="value pos" id="upCount">—</div><div class="hint">Variation 24 h positive</div></div>
-<div class="metric"><div class="label">Marchés en baisse</div><div class="value neg" id="downCount">—</div><div class="hint">Variation 24 h négative</div></div>
-<div class="metric"><div class="label">Mise à jour</div><div class="value" id="refreshRate">15 s</div><div class="hint">Actualisation automatique en page ouverte</div></div>
+<div class="metric"><div class="label">Marchés crypto chargés</div><div class="value" id="cryptoCount">—</div><div class="hint">Spot Binance · données publiques</div></div>
+<div class="metric"><div class="label">Derniers signaux</div><div class="value blue" id="signalCount">0</div><div class="hint">Informatifs, pas des ordres</div></div>
+<div class="metric"><div class="label">Prochaine analyse</div><div class="value" id="nextRun">—</div><div class="hint">Cycle local, onglet ouvert</div></div>
+<div class="metric"><div class="label">Fraîcheur des données</div><div class="value" id="freshness">—</div><div class="hint" id="freshHint">En attente du premier chargement</div></div>
 </section>
-<div class="toolbar"><input id="search" placeholder="Rechercher BTC, ETH, SOL…" aria-label="Rechercher un marché"><select id="sort" aria-label="Trier"><option value="volume">Volume 24 h ↓</option><option value="change">Variation 24 h ↓</option><option value="price">Prix ↓</option><option value="name">Nom A–Z</option></select><select id="filter" aria-label="Filtrer"><option value="all">Tous les marchés</option><option value="up">En hausse</option><option value="down">En baisse</option></select><button id="refresh">Actualiser</button><button id="pause" class="primary">Pause</button></div>
-<section class="panel"><div class="panelhead"><h2>Univers de marché · Binance Spot</h2><span class="pill" id="shown">Chargement…</span></div><div class="tablewrap"><table><thead><tr><th>Actif</th><th>Dernier prix (USDT)</th><th>Variation 24 h</th><th>Volume 24 h (USDT)</th></tr></thead><tbody id="rows"><tr><td colspan="4" class="empty">Récupération des données publiques…</td></tr></tbody></table></div><div class="foot">Le navigateur doit rester ouvert pour actualiser les données. Une page statique ne garantit pas une surveillance serveur 24 h/24.</div></section>
-<div class="lower"><section class="panel"><div class="panelhead"><h2>Signaux de surveillance</h2><span class="pill">Règles simples · non prédictives</span></div><div id="signals"><div class="signal"><div><strong>Analyse en attente</strong><small>Les marchés seront évalués après chargement.</small></div><span class="tag wait">ATTENTE</span></div></div></section><section class="panel"><div class="panelhead"><h2>Garde-fous FX SENTINEL</h2><span class="pill">V1</span></div><ul class="risk"><li>Aucun accès au portefeuille externe.</li><li>Aucune clé API privée demandée ou stockée.</li><li>Aucune exécution d’ordre ni retrait.</li><li>Les données indisponibles ne sont pas remplacées par des prix inventés.</li><li>Forex non inclus : une source dédiée sera nécessaire.</li></ul></section></div>
-<footer class="foot">FX SENTINEL Mobile · Prototype gratuit · Données de marché fournies par l’API publique Binance. Les données peuvent être retardées ou indisponibles.</footer>
+
+<section class="panel"><div class="panelhead"><h2>MODE AUTOMATIQUE</h2><span class="tag" id="botTag">ARRÊTÉ</span></div>
+<div class="auto-grid"><div><div class="auto-state" id="botState">Bot en attente</div><div class="auto-desc" id="botDesc">Active le bot pour démarrer l’analyse périodique et la détection de données périmées.</div><div class="actions"><button class="btn primary" id="toggleBot">▶ Activer le bot</button><button class="btn mutebtn" id="refreshNow">↻ Actualiser maintenant</button></div><div class="mini">Cycle : 60 secondes. Si les données sont indisponibles ou trop anciennes, l’application tente un rechargement et affiche un état d’alerte. Pas d’achat, vente, stop ou ordre réel.</div></div>
+<div><div class="label">Marchés suivis</div><p><strong class="green">✓ Crypto</strong> — 24 h/24 selon disponibilité de la source<br><span class="sub">Spot Binance</span></p><p><strong class="blue">◷ Forex</strong> — démonstration sans flux connecté</p><p><strong class="blue">◷ Bourse</strong> — démonstration sans flux connecté</p><div class="mini" id="lastAnalysis">Dernière analyse : aucune</div></div></div>
+</section>
+
+<section class="panel"><div class="panelhead"><h2>UNIVERS DU BOT</h2><span class="tag">VISUALISATION D’ACTIVITÉ</span></div><p class="sub">Les animations illustrent les catégories surveillées. Les compteurs crypto reflètent les données réellement reçues ; les catégories Forex et Bourse restent en démonstration.</p><div class="markets">
+<div class="marketbox"><div class="marketname">Crypto</div><div class="orbit"><span class="beam"></span><span class="orb goldorb"></span></div><div class="marketstats" id="cryptoStats">Chargement des marchés…</div></div>
+<div class="marketbox"><div class="marketname">Forex</div><div class="orbit"><span class="beam"></span><span class="orb"></span></div><div class="marketstats">Démo · flux réel non connecté</div></div>
+<div class="marketbox"><div class="marketname">Bourse</div><div class="orbit"><span class="beam"></span><span class="orb"></span></div><div class="marketstats">Démo · flux réel non connecté</div></div>
+</div><div class="mini">Les compteurs « vus » désignent les symboles reçus de la source, pas une promesse de couverture de tous les marchés mondiaux.</div></section>
+
+<section class="panel"><div class="panelhead"><h2>OBJECTIF MENSUEL — SIMULATION</h2><span class="tag">PAS UNE PROMESSE DE RENDEMENT</span></div><div class="goalrow"><div><div class="label">Gain simulé net</div><div class="goalamount" id="monthGain">+0,00 USDT</div></div><div><div class="label">Objectif de référence</div><div><strong id="goalTarget">5,00 USDT</strong></div></div></div><div class="progress"><span id="goalBar"></span></div><div id="goalText" class="sub">La simulation commence à 0. Les objectifs ne déclenchent jamais d’opération.</div><div class="toolbar" style="margin-top:12px"><label class="sub" for="targetInput" style="align-self:center">Objectif USDT</label><input id="targetInput" type="number" min="0.01" max="1000000" step="0.01" value="5" aria-label="Objectif mensuel USDT"><button id="setTarget">Appliquer</button><button id="resetSim" class="danger">Réinitialiser simulation</button></div></section>
+
+<section class="panel"><div class="panelhead"><h2>RÉSULTATS — SAISON DE SIMULATION</h2><span class="tag">CAPITAL VIRTUEL</span></div><div class="results">
+<div class="result"><div class="label">Solde simulé</div><div class="v" id="simBalance">1 000,00 USDT</div></div><div class="result"><div class="label">Bénéfice net</div><div class="v green" id="simProfit">+0,00 USDT</div></div><div class="result"><div class="label">Perte cumulée</div><div class="v red" id="simLoss">−0,00 USDT</div></div><div class="result"><div class="label">Mis de côté</div><div class="v" id="simSaved">0,00 USDT</div></div></div><p class="mini">V2 ne passe aucun trade simulé automatiquement par défaut. Les chiffres évoluent seulement si un module de simulation explicite est ajouté ; aucun bénéfice fictif n’est généré pour remplir l’objectif.</p></section>
+
+<section class="panel"><div class="panelhead"><h2>MARCHÉS CRYPTO — BINANCE SPOT</h2><span class="tag" id="marketUpdated">Pas encore actualisé</span></div><div class="toolbar"><input id="search" type="search" placeholder="Rechercher BTC, ETH, SOL…" aria-label="Rechercher une crypto"><select id="sort"><option value="volume">Volume décroissant</option><option value="change">Variation décroissante</option><option value="price">Prix décroissant</option><option value="symbol">Symbole A–Z</option></select><button id="clearSearch">Effacer</button></div><div class="tablewrap"><table><thead><tr><th>Actif</th><th>Prix (USDT)</th><th>24 h</th><th>Volume USDT</th></tr></thead><tbody id="marketRows"><tr><td class="empty" colspan="4">Chargement des données publiques Binance…</td></tr></tbody></table></div><div class="mini">Les cours sont publics et peuvent être retardés ou indisponibles. Ce tableau ne constitue pas un conseil financier.</div></section>
+
+<section class="panel"><div class="panelhead"><h2>SIGNAUX INFORMATIFS</h2><span class="tag">FILTRE SIMPLE · NON PRÉDICTIF</span></div><div class="signal-list" id="signals"><div class="sub">Les signaux s’afficheront après réception des données.</div></div><div class="mini">Signal de variation/activité uniquement ; aucun backtest ni validation de performance n’est revendiqué.</div></section>
+<div class="footer">FX SENTINEL V2 · Prototype gratuit · Aucune clé privée · Aucune transaction réelle.<br>La surveillance continue nécessite un service serveur fiable ; un navigateur mobile peut suspendre les tâches en arrière-plan.</div>
 </main>
 <script>
-(()=> {
-const $=id=>document.getElementById(id); let all=[], paused=false, timer=null, busy=false;
-const fmt=(n, max=4)=>Number(n).toLocaleString('fr-FR',{maximumFractionDigits:max});
-function setStatus(state,msg){$('dot').className='dot '+state;$('connection').textContent=msg}
-function render(){
- const q=$('search').value.trim().toUpperCase(), sort=$('sort').value, filter=$('filter').value;
- let a=all.filter(x=>x.symbol.endsWith('USDT') && (!q||x.symbol.includes(q)) && (filter==='all'||(filter==='up'?+x.priceChangePercent>0:+x.priceChangePercent<0)));
- a.sort((x,y)=>sort==='change'?+y.priceChangePercent-+x.priceChangePercent:sort==='price'?+y.lastPrice-+x.lastPrice:sort==='name'?x.symbol.localeCompare(y.symbol):+y.quoteVolume-+x.quoteVolume);
- $('marketCount').textContent=all.filter(x=>x.symbol.endsWith('USDT')).length;
- $('upCount').textContent=all.filter(x=>x.symbol.endsWith('USDT')&&+x.priceChangePercent>0).length;
- $('downCount').textContent=all.filter(x=>x.symbol.endsWith('USDT')&&+x.priceChangePercent<0).length;
- $('shown').textContent=a.length+' affichés';
- $('rows').innerHTML=a.slice(0,350).map(x=>`<tr><td><span class="coin">${x.symbol.replace('USDT','')}</span><span class="symbol">/ USDT</span></td><td>${fmt(x.lastPrice,8)}</td><td class="${+x.priceChangePercent>=0?'pos':'neg'}">${+x.priceChangePercent>=0?'+':''}${fmt(x.priceChangePercent,2)}%</td><td>${fmt(x.quoteVolume,0)}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">Aucun marché ne correspond à la recherche.</td></tr>';
- const top=[...all].filter(x=>x.symbol.endsWith('USDT')).sort((a,b)=>+b.priceChangePercent-+a.priceChangePercent).slice(0,3);
- $('signals').innerHTML=top.length?top.map(x=>`<div class="signal"><div><strong>${x.symbol.replace('USDT','')} <span class="pos">+${fmt(x.priceChangePercent,2)}%</span></strong><small>Variation 24 h élevée : à examiner, pas un ordre d’achat.</small></div><span class="tag info">À ÉTUDIER</span></div>`).join(''):'<div class="signal"><div><strong>Aucun signal</strong><small>Données en attente.</small></div><span class="tag wait">ATTENTE</span></div>';
+(() => {
+const $ = id => document.getElementById(id);
+const fmt = (n, digits=2) => Number(n).toLocaleString('fr-FR',{minimumFractionDigits:digits,maximumFractionDigits:digits});
+let markets = [], lastDataAt = 0, botOn = false, timer = null, countdownTimer = null, nextAt = 0, signals = [];
+let target = 5, sim = {start:1000,balance:1000,profit:0,loss:0,saved:0};
+const CYCLE_MS = 60000, STALE_MS = 90000;
+function setConnection(ok, text){$('connectionDot').className='dot '+(ok?'ok':'bad');$('connectionText').textContent=text;}
+function renderMarkets(){
+ const query=$('search').value.trim().toUpperCase();
+ let rows=markets.filter(m=>m.symbol.endsWith('USDT') && (!query || m.symbol.includes(query)));
+ const sort=$('sort').value;
+ rows.sort((a,b)=> sort==='change'?b.change-a.change:sort==='price'?b.price-a.price:sort==='symbol'?a.symbol.localeCompare(b.symbol):b.quoteVolume-a.quoteVolume);
+ $('cryptoCount').textContent=markets.filter(m=>m.symbol.endsWith('USDT')).length.toLocaleString('fr-FR');
+ $('cryptoStats').textContent=`en étude · ${markets.filter(m=>m.symbol.endsWith('USDT')).length} marchés reçus · ${signals.length} signaux`;
+ $('marketRows').innerHTML=rows.slice(0,150).map(m=>`<tr><td><span class="coin">${m.symbol.replace('USDT','')}</span><span class="symbol">/ USDT</span></td><td>${fmt(m.price, m.price<1?6:2)}</td><td class="${m.change>=0?'green':'red'}">${m.change>=0?'+':''}${fmt(m.change,2)}%</td><td>${fmt(m.quoteVolume,0)}</td></tr>`).join('') || '<tr><td class="empty" colspan="4">Aucun résultat pour cette recherche.</td></tr>';
 }
-async function load(){
- if(busy||paused)return;busy=true;
+function renderSignals(){
+ $('signalCount').textContent=signals.length;
+ $('signals').innerHTML=signals.length?signals.slice(0,8).map(s=>`<div class="signal"><div><strong>${s.symbol} <span class="${s.change>=0?'green':'red'}">${s.change>=0?'+':''}${fmt(s.change,2)}%</span></strong><small>${s.note} · ${new Date(s.at).toLocaleTimeString('fr-FR')}</small></div><span class="pill">À examiner</span></div>`).join(''):'<div class="sub">Aucun signal selon le filtre simple actuel.</div>';
+}
+function renderSim(){
+ $('monthGain').textContent=(sim.profit>=0?'+':'')+fmt(sim.profit)+' USDT';$('goalTarget').textContent=fmt(target)+' USDT';
+ const pct=Math.max(0,Math.min(100,sim.profit/target*100));$('goalBar').style.width=pct+'%';
+ $('goalText').textContent=`${fmt(pct,1)} % de l’objectif de référence · il reste ${fmt(Math.max(0,target-sim.profit))} USDT. Aucun trade n’est déclenché pour l’atteindre.`;
+ $('simBalance').textContent=fmt(sim.balance)+' USDT';$('simProfit').textContent=(sim.profit>=0?'+':'')+fmt(sim.profit)+' USDT';$('simLoss').textContent='−'+fmt(sim.loss)+' USDT';$('simSaved').textContent=fmt(sim.saved)+' USDT';
+}
+function updateCountdown(){if(!botOn){$('nextRun').textContent='—';return;}const left=Math.max(0,nextAt-Date.now());$('nextRun').textContent=Math.ceil(left/1000)+' s';}
+async function refreshData(){
+ $('freshness').textContent='…';$('freshHint').textContent='Demande en cours';
  try{
- const r=await fetch('https://api.binance.com/api/v3/ticker/24hr',{cache:'no-store'});
- if(!r.ok)throw new Error('HTTP '+r.status);
- const d=await r.json(); if(!Array.isArray(d))throw new Error('Réponse API invalide');
- all=d.filter(x=>x.symbol&&x.lastPrice&&x.quoteVolume); render();
- $('updated').textContent='Mis à jour '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
- setStatus('ok','API publique connectée');
- }catch(e){setStatus('bad','API indisponible — réessaie');if(!all.length)$('rows').innerHTML='<tr><td colspan="4" class="empty">Impossible de charger les données. Vérifie la connexion puis touche Actualiser.</td></tr>'}
- finally{busy=false}
+   const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),12000);
+   const res=await fetch('https://api.binance.com/api/v3/ticker/24hr',{cache:'no-store',signal:controller.signal});clearTimeout(timeout);
+   if(!res.ok) throw new Error('HTTP '+res.status);
+   const data=await res.json();
+   markets=data.filter(x=>x.symbol && x.lastPrice && Number(x.lastPrice)>0).map(x=>({symbol:x.symbol,price:Number(x.lastPrice),change:Number(x.priceChangePercent)||0,quoteVolume:Number(x.quoteVolume)||0}));
+   lastDataAt=Date.now();setConnection(true,'Données publiques Binance reçues');$('freshness').textContent='À jour';$('freshHint').textContent='Reçu à '+new Date(lastDataAt).toLocaleTimeString('fr-FR');$('marketUpdated').textContent='Mis à jour '+new Date(lastDataAt).toLocaleTimeString('fr-FR');
+   // Signals are descriptive filters only; no trading decisions are executed.
+   signals=markets.filter(m=>m.symbol.endsWith('USDT') && Math.abs(m.change)>=3 && m.quoteVolume>=1000000).sort((a,b)=>Math.abs(b.change)-Math.abs(a.change)).slice(0,12).map(m=>({symbol:m.symbol,change:m.change,note:m.change>0?'Variation 24 h élevée':'Variation 24 h négative',at:lastDataAt}));
+   renderMarkets();renderSignals();$('lastAnalysis').textContent='Dernière analyse : '+new Date(lastDataAt).toLocaleString('fr-FR')+' · prochaine tentative selon mode automatique';
+ }catch(e){
+   setConnection(false,'Source Binance indisponible');$('freshness').textContent='Alerte';$('freshHint').textContent='Actualisation échouée · '+(lastDataAt?'dernières données conservées':'aucune donnée fiable');$('marketUpdated').textContent='Échec actualisation';
+   if(lastDataAt && Date.now()-lastDataAt>STALE_MS){$('freshness').textContent='Périmées';$('freshHint').textContent='Dernières données trop anciennes : ne pas les traiter comme actuelles';}
+   $('lastAnalysis').textContent='Tentative échouée : '+new Date().toLocaleTimeString('fr-FR');
+ }
 }
-['search','sort','filter'].forEach(id=>$(id).addEventListener(id==='search'?'input':'change',render));
-$('refresh').addEventListener('click',load);
-$('pause').addEventListener('click',()=>{paused=!paused;$('pause').textContent=paused?'Reprendre':'Pause';$('refreshRate').textContent=paused?'Pause':'15 s';setStatus(paused?'':'ok',paused?'Actualisation en pause':'Actualisation active');if(!paused)load()});
-load();timer=setInterval(()=>{if(!paused)load()},15000);
+function cycle(){if(!botOn)return;refreshData().finally(()=>{if(botOn){nextAt=Date.now()+CYCLE_MS;updateCountdown();timer=setTimeout(cycle,CYCLE_MS);}});}
+function startBot(){if(botOn)return;botOn=true;$('botTag').textContent='EN MARCHE';$('botState').textContent='En marche (automatique)';$('botState').className='auto-state green';$('botDesc').textContent='Analyse périodique activée. La source est vérifiée à chaque cycle ; en cas d’échec, une nouvelle tentative sera effectuée.';$('toggleBot').textContent='■ Arrêter le bot';$('toggleBot').classList.add('danger');nextAt=Date.now()+CYCLE_MS;refreshData().finally(()=>{if(botOn){nextAt=Date.now()+CYCLE_MS;timer=setTimeout(cycle,CYCLE_MS);}});}
+function stopBot(){botOn=false;clearTimeout(timer);$('botTag').textContent='ARRÊTÉ';$('botState').textContent='Bot arrêté';$('botState').className='auto-state';$('botDesc').textContent='Aucune analyse périodique. Les actualisations manuelles restent disponibles.';$('toggleBot').textContent='▶ Activer le bot';$('toggleBot').classList.remove('danger');$('nextRun').textContent='—';}
+$('toggleBot').addEventListener('click',()=>botOn?stopBot():startBot());
+$('refreshNow').addEventListener('click',()=>refreshData());
+$('search').addEventListener('input',renderMarkets);$('sort').addEventListener('change',renderMarkets);$('clearSearch').addEventListener('click',()=>{$('search').value='';renderMarkets();});
+$('setTarget').addEventListener('click',()=>{const n=Number($('targetInput').value);if(Number.isFinite(n)&&n>0&&n<=1000000){target=n;renderSim();}else alert('Entre un objectif positif inférieur ou égal à 1 000 000 USDT.');});
+$('resetSim').addEventListener('click',()=>{if(confirm('Réinitialiser les résultats de simulation à 1 000 USDT ?')){sim={start:1000,balance:1000,profit:0,loss:0,saved:0};renderSim();}});
+countdownTimer=setInterval(updateCountdown,1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden && botOn && (!lastDataAt || Date.now()-lastDataAt>STALE_MS)){clearTimeout(timer);cycle();}});
+renderSim();refreshData();
 })();
-</script></body></html>
+</script>
+</body></html>
