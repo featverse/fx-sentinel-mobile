@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#07111f">
 <meta name="description" content="FX SENTINEL — surveillance de marchés, signaux informatifs et simulation uniquement.">
-<title>FX SENTINEL | Sentinel Mobile V2</title>
+<title>FX SENTINEL | Sentinel Mobile V2.2</title>
 <style>
 :root{color-scheme:dark;--bg:#07111f;--panel:#0d1a2b;--panel2:#102239;--line:#20354e;--text:#edf5ff;--muted:#8da4bd;--green:#38e0a1;--red:#ff6f8d;--blue:#55aaff;--gold:#f4c96b}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#102845 0,#07111f 48%);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -22,8 +22,17 @@
 .log-tools input,.log-tools select{width:100%;min-width:0;background:#081728;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit}
 .log-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .log-chip{border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:12px}
-.log-list{display:grid;gap:8px}
-.log-entry{background:#081728;border:1px solid var(--line);border-radius:10px;padding:11px}
+.log-list{display:grid;gap:6px;content-visibility:auto}
+.log-entry{background:#081728;border:1px solid var(--line);border-radius:10px;padding:0;overflow:hidden}
+.log-entry summary{list-style:none;cursor:pointer;padding:10px 11px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+.log-entry summary::-webkit-details-marker{display:none}
+.log-entry summary:after{content:"＋";grid-column:2;grid-row:1/4;color:var(--muted);align-self:center}
+.log-entry[open] summary:after{content:"−"}
+.log-brief{min-width:0;overflow-wrap:anywhere}
+.log-preview{color:var(--text);font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.log-detail{padding:0 11px 11px;color:var(--text);overflow-wrap:anywhere}
+.log-detail p{margin:4px 0}
+.log-detail .muted{font-size:11px}
 .log-meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-bottom:5px}
 .log-type{font-weight:800;letter-spacing:.05em}
 .log-type.INFO{color:var(--blue)}.log-type.DATA{color:var(--green)}.log-type.SIGNAL{color:var(--gold)}.log-type.WARNING{color:var(--gold)}.log-type.ERROR{color:var(--red)}
@@ -33,7 +42,7 @@
 </style>
 </head>
 <body><main class="wrap">
-<header class="top"><div class="brand"><div class="logo">FS</div><div><h1>FX SENTINEL</h1><div class="sub">SENTINEL MOBILE · V2 · OBSERVATION & SIMULATION</div></div></div><div class="status"><span class="dot" id="connectionDot"></span><span id="connectionText">Connexion aux données publiques…</span></div></header>
+<header class="top"><div class="brand"><div class="logo">FS</div><div><h1>FX SENTINEL</h1><div class="sub">SENTINEL MOBILE · V2.2 · JOURNAL OPTIMISÉ</div></div></div><div class="status"><span class="dot" id="connectionDot"></span><span id="connectionText">Connexion aux données publiques…</span></div></header>
 <div class="notice"><strong>MODE SÛR —</strong> Aucun ordre réel, aucune clé API privée et aucun retrait. Les cours crypto viennent de l’API publique Binance. Forex/Bourse sont en démonstration tant qu’une source publique fiable n’est pas configurée. Une page ouverte ne garantit pas une surveillance 24 h/24.</div>
 <section class="grid">
 <div class="metric"><div class="label">Marchés crypto chargés</div><div class="value" id="cryptoCount">—</div><div class="hint">Spot Binance · données publiques</div></div>
@@ -66,7 +75,10 @@
    <option value="ALL">Tous les événements</option><option>INFO</option><option>DATA</option><option>SIGNAL</option><option>WARNING</option><option>ERROR</option>
   </select>
   <input id="logSearch" placeholder="Rechercher un actif ou un détail…" aria-label="Rechercher dans le journal">
+  <select id="logPeriod" aria-label="Période du journal"><option value="0">Toutes les dates</option><option value="3600000">Dernière heure</option><option value="86400000">Dernières 24 heures</option><option value="604800000">7 derniers jours</option></select>
+  <select id="logOrder" aria-label="Ordre du journal"><option value="new">Plus récents d’abord</option><option value="old">Plus anciens d’abord</option></select>
  </div>
+ <p class="mini" id="logVisibleCount">Affichage des événements</p>
  <div class="toolbar"><button class="btn" id="exportLog">Exporter le journal</button><button class="btn" id="clearLog">Effacer le journal</button></div>
  <div class="log-list" id="logList"><div class="log-empty">Chargement du journal…</div></div>
  <p class="muted">Conservation sur cet appareil uniquement. Pour un historique durable 24 h/24, l’étape backend sera nécessaire.</p>
@@ -80,7 +92,7 @@
 <section class="panel"><div class="panelhead"><h2>MARCHÉS CRYPTO — BINANCE SPOT</h2><span class="tag" id="marketUpdated">Pas encore actualisé</span></div><div class="toolbar"><input id="search" type="search" placeholder="Rechercher BTC, ETH, SOL…" aria-label="Rechercher une crypto"><select id="sort"><option value="volume">Volume décroissant</option><option value="change">Variation décroissante</option><option value="price">Prix décroissant</option><option value="symbol">Symbole A–Z</option></select><button id="clearSearch">Effacer</button></div><div class="tablewrap"><table><thead><tr><th>Actif</th><th>Prix (USDT)</th><th>24 h</th><th>Volume USDT</th></tr></thead><tbody id="marketRows"><tr><td class="empty" colspan="4">Chargement des données publiques Binance…</td></tr></tbody></table></div><div class="mini">Les cours sont publics et peuvent être retardés ou indisponibles. Ce tableau ne constitue pas un conseil financier.</div></section>
 
 <section class="panel"><div class="panelhead"><h2>SIGNAUX INFORMATIFS</h2><span class="tag">FILTRE SIMPLE · NON PRÉDICTIF</span></div><div class="signal-list" id="signals"><div class="sub">Les signaux s’afficheront après réception des données.</div></div><div class="mini">Signal de variation/activité uniquement ; aucun backtest ni validation de performance n’est revendiqué.</div></section>
-<div class="footer">FX SENTINEL V2 · Prototype gratuit · Aucune clé privée · Aucune transaction réelle.<br>La surveillance continue nécessite un service serveur fiable ; un navigateur mobile peut suspendre les tâches en arrière-plan.</div>
+<div class="footer">FX SENTINEL V2.2 · Prototype gratuit · Aucune clé privée · Aucune transaction réelle.<br>La surveillance continue nécessite un service serveur fiable ; un navigateur mobile peut suspendre les tâches en arrière-plan.</div>
 </main>
 <script>
 (() => {
@@ -90,10 +102,12 @@ let markets = [], lastDataAt = 0, botOn = false, timer = null, countdownTimer = 
 let target = 5, sim = {start:1000,balance:1000,profit:0,loss:0,saved:0};
 
 const CYCLE_MS = 60000, STALE_MS = 90000;
-const LOG_KEY='fxs_v21_activity_log';
+const LOG_KEY='fxs_v22_activity_log';
+const LEGACY_LOG_KEY='fxs_v21_activity_log';
 let activityLog=[];
-try{activityLog=JSON.parse(localStorage.getItem(LOG_KEY)||'[]');if(!Array.isArray(activityLog))activityLog=[];}catch(e){activityLog=[];}
+try{const saved=localStorage.getItem(LOG_KEY);const legacy=localStorage.getItem(LEGACY_LOG_KEY);activityLog=JSON.parse(saved||legacy||'[]');if(!Array.isArray(activityLog))activityLog=[];}catch(e){activityLog=[];}
 function addLog(type,market,detail){
+ if(type==='SIGNAL'){const now=Date.now();const prev=activityLog.find(x=>x.type==='SIGNAL'&&x.market===market&&now-new Date(x.at).getTime()<600000);if(prev){const a=String(prev.detail).match(/([+-]?[0-9]+[,.]?[0-9]*) %/);const b=String(detail).match(/([+-]?[0-9]+[,.]?[0-9]*) %/);if(!a||!b||Math.abs(Number(b[1].replace(',','.'))-Number(a[1].replace(',','.')))<1.5)return;}}
  const item={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),at:new Date().toISOString(),type,market:market||'SYSTÈME',detail:String(detail||'')};
  activityLog.unshift(item);activityLog=activityLog.slice(0,300);
  try{localStorage.setItem(LOG_KEY,JSON.stringify(activityLog));}catch(e){}
@@ -105,8 +119,12 @@ function renderLog(){
  $('logInfoCount').textContent='INFO '+counts.INFO;$('logDataCount').textContent='DATA '+counts.DATA;
  $('logSignalCount').textContent='SIGNAL '+counts.SIGNAL;$('logWarnCount').textContent='WARNING '+counts.WARNING;$('logErrorCount').textContent='ERROR '+counts.ERROR;
  const filter=$('logFilter').value,query=$('logSearch').value.trim().toLowerCase();
- const rows=activityLog.filter(x=>(filter==='ALL'||x.type===filter)&&(!query||(x.market+' '+x.detail).toLowerCase().includes(query))).slice(0,100);
- $('logList').innerHTML=rows.length?rows.map(x=>`<article class="log-entry"><div class="log-meta"><span>${new Date(x.at).toLocaleString('fr-FR')}</span><span>${escapeHtml(x.market)}</span></div><div class="log-type ${x.type}">${x.type}</div><div>${escapeHtml(x.detail)}</div></article>`).join(''):'<div class="log-empty">Aucun événement correspondant.</div>';
+ const period=Number($('logPeriod')?.value||0),cutoff=period?Date.now()-period:0;
+ let rows=activityLog.filter(x=>(filter==='ALL'||x.type===filter)&&(!query||(x.market+' '+x.detail+' '+(x.source||'')).toLowerCase().includes(query))&&(!cutoff||new Date(x.at).getTime()>=cutoff));
+ if($('logOrder')?.value==='old') rows=rows.slice().reverse();
+ const total=rows.length; rows=rows.slice(0,60);
+ $('logVisibleCount').textContent=`${rows.length} événement(s) affiché(s) sur ${total} résultat(s) · maximum 60 pour préserver la fluidité`;
+ $('logList').innerHTML=rows.length?rows.map(x=>`<details class="log-entry"><summary><span class="log-brief"><span class="log-type ${escapeHtml(x.type)}">${escapeHtml(x.type)}</span><span class="log-preview">${escapeHtml(x.detail)}</span></span><span class="log-meta">${new Date(x.at).toLocaleTimeString('fr-FR')}<br>${escapeHtml(x.market)}</span></summary><div class="log-detail"><p>${escapeHtml(x.detail)}</p><p class="muted">Horodatage : ${new Date(x.at).toLocaleString('fr-FR')}</p><p class="muted">Source / marché : ${escapeHtml(x.market||'SYSTÈME')} · Type : ${escapeHtml(x.type)}</p><p class="muted">ID événement : ${escapeHtml(x.id||'non disponible')}</p></div></details>`).join(''):'<div class="log-empty">Aucun événement correspondant.</div>';
 }
 function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
@@ -160,16 +178,16 @@ function startBot(){if(botOn)return;botOn=true;addLog('INFO','BOT','Surveillance
 function stopBot(){addLog('WARNING','BOT','Surveillance automatique arrêtée.');botOn=false;clearTimeout(timer);$('botTag').textContent='ARRÊTÉ';$('botState').textContent='Bot arrêté';$('botState').className='auto-state';$('botDesc').textContent='Aucune analyse périodique. Les actualisations manuelles restent disponibles.';$('toggleBot').textContent='▶ Activer le bot';$('toggleBot').classList.remove('danger');$('nextRun').textContent='—';}
 $('toggleBot').addEventListener('click',()=>botOn?stopBot():startBot());
 $('refreshNow').addEventListener('click',()=>{addLog('INFO','BOT','Actualisation manuelle demandée.');refreshData();});
-$('logFilter').addEventListener('change',renderLog);$('logSearch').addEventListener('input',renderLog);
+$('logFilter').addEventListener('change',renderLog);$('logSearch').addEventListener('input',renderLog);$('logPeriod').addEventListener('change',renderLog);$('logOrder').addEventListener('change',renderLog);
 $('clearLog').addEventListener('click',()=>{if(confirm('Effacer le journal local de cet appareil ?')){activityLog=[];try{localStorage.removeItem(LOG_KEY);}catch(e){}renderLog();addLog('INFO','JOURNAL','Journal effacé ; nouvel événement de confirmation ajouté.');}});
-$('exportLog').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(activityLog,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='fx-sentinel-journal-v21.json';a.click();URL.revokeObjectURL(url);});
+$('exportLog').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(activityLog,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='fx-sentinel-journal-v22.json';a.click();URL.revokeObjectURL(url);});
 
 $('search').addEventListener('input',renderMarkets);$('sort').addEventListener('change',renderMarkets);$('clearSearch').addEventListener('click',()=>{$('search').value='';renderMarkets();});
 $('setTarget').addEventListener('click',()=>{const n=Number($('targetInput').value);if(Number.isFinite(n)&&n>0&&n<=1000000){target=n;renderSim();}else alert('Entre un objectif positif inférieur ou égal à 1 000 000 USDT.');});
 $('resetSim').addEventListener('click',()=>{if(confirm('Réinitialiser les résultats de simulation à 1 000 USDT ?')){sim={start:1000,balance:1000,profit:0,loss:0,saved:0};renderSim();}});
 countdownTimer=setInterval(updateCountdown,1000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden && botOn && (!lastDataAt || Date.now()-lastDataAt>STALE_MS)){clearTimeout(timer);cycle();}});
-renderLog();addLog('INFO','SYSTÈME','FX SENTINEL V2.1 initialisé. Mode observation : aucun ordre réel ni trade simulé automatique.');renderSim();refreshData();
+renderLog();addLog('INFO','SYSTÈME','FX SENTINEL V2.2 initialisé. Mode observation : aucun ordre réel ni trade simulé automatique.');renderSim();refreshData();
 })();
 </script>
 </body></html>
