@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#07111f">
 <meta name="description" content="FX SENTINEL — surveillance de marchés, signaux informatifs et simulation uniquement.">
-<title>FX SENTINEL | Sentinel Mobile V2.2</title>
+<title>FX SENTINEL | Sentinel Mobile V2.2 Simulation</title>
 <style>
 :root{color-scheme:dark;--bg:#07111f;--panel:#0d1a2b;--panel2:#102239;--line:#20354e;--text:#edf5ff;--muted:#8da4bd;--green:#38e0a1;--red:#ff6f8d;--blue:#55aaff;--gold:#f4c96b}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#102845 0,#07111f 48%);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -38,11 +38,17 @@
 .log-type.INFO{color:var(--blue)}.log-type.DATA{color:var(--green)}.log-type.SIGNAL{color:var(--gold)}.log-type.WARNING{color:var(--gold)}.log-type.ERROR{color:var(--red)}
 .log-empty{padding:16px;color:var(--muted);text-align:center}
 @media(max-width:520px){.log-tools{grid-template-columns:1fr}}
+.trade-card{border:1px solid var(--line);background:#081728;border-radius:11px;padding:12px}
+.trade-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+.trade-state{font-size:10px;border:1px solid var(--line);border-radius:999px;padding:4px 7px;color:var(--muted)}
+.trade-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;font-size:12px}
+.trade-grid span:nth-child(odd){color:var(--muted)}
+.trade-card .trade-reason{font-size:12px;color:var(--muted);margin-top:8px}
 
 </style>
 </head>
 <body><main class="wrap">
-<header class="top"><div class="brand"><div class="logo">FS</div><div><h1>FX SENTINEL</h1><div class="sub">SENTINEL MOBILE · V2.2 · JOURNAL OPTIMISÉ</div></div></div><div class="status"><span class="dot" id="connectionDot"></span><span id="connectionText">Connexion aux données publiques…</span></div></header>
+<header class="top"><div class="brand"><div class="logo">FS</div><div><h1>FX SENTINEL</h1><div class="sub">SENTINEL MOBILE · V2.2 · SIMULATION CONTRÔLÉE</div></div></div><div class="status"><span class="dot" id="connectionDot"></span><span id="connectionText">Connexion aux données publiques…</span></div></header>
 <div class="notice"><strong>MODE SÛR —</strong> Aucun ordre réel, aucune clé API privée et aucun retrait. Les cours crypto viennent de l’API publique Binance. Forex/Bourse sont en démonstration tant qu’une source publique fiable n’est pas configurée. Une page ouverte ne garantit pas une surveillance 24 h/24.</div>
 <section class="grid">
 <div class="metric"><div class="label">Marchés crypto chargés</div><div class="value" id="cryptoCount">—</div><div class="hint">Spot Binance · données publiques</div></div>
@@ -84,10 +90,34 @@
  <p class="muted">Conservation sur cet appareil uniquement. Pour un historique durable 24 h/24, l’étape backend sera nécessaire.</p>
 </section>
 
-<section class="panel"><div class="panelhead"><h2>OBJECTIF MENSUEL — SIMULATION</h2><span class="tag">PAS UNE PROMESSE DE RENDEMENT</span></div><div class="goalrow"><div><div class="label">Gain simulé net</div><div class="goalamount" id="monthGain">+0,00 USDT</div></div><div><div class="label">Objectif de référence</div><div><strong id="goalTarget">5,00 USDT</strong></div></div></div><div class="progress"><span id="goalBar"></span></div><div id="goalText" class="sub">La simulation commence à 0. Les objectifs ne déclenchent jamais d’opération.</div><div class="toolbar" style="margin-top:12px"><label class="sub" for="targetInput" style="align-self:center">Objectif USDT</label><input id="targetInput" type="number" min="0.01" max="1000000" step="0.01" value="5" aria-label="Objectif mensuel USDT"><button id="setTarget">Appliquer</button><button id="resetSim" class="danger">Réinitialiser simulation</button></div></section>
+<section class="panel"><div class="panelhead"><h2>OBJECTIF MENSUEL — SIMULATION</h2><span class="tag">PAS UNE PROMESSE DE RENDEMENT</span></div><div class="goalrow"><div><div class="label">Gain simulé net</div><div class="goalamount" id="monthGain">+0,00 USDT</div></div><div><div class="label">Objectif de référence</div><div><strong id="goalTarget">5,00 USDT</strong></div></div></div><div class="progress"><span id="goalBar"></span></div><div id="goalText" class="sub">La simulation commence à 0. Les objectifs ne déclenchent jamais d’opération.</div><div class="toolbar" style="margin-top:12px"><label class="sub" for="targetInput" style="align-self:center">Objectif USDT</label><input id="targetInput" type="number" min="0.01" max="1000000" step="0.01" value="5" aria-label="Objectif mensuel USDT"><button id="setTarget">Appliquer</button></div></section>
 
-<section class="panel"><div class="panelhead"><h2>RÉSULTATS — SAISON DE SIMULATION</h2><span class="tag">CAPITAL VIRTUEL</span></div><div class="results">
-<div class="result"><div class="label">Solde simulé</div><div class="v" id="simBalance">1 000,00 USDT</div></div><div class="result"><div class="label">Bénéfice net</div><div class="v green" id="simProfit">+0,00 USDT</div></div><div class="result"><div class="label">Perte cumulée</div><div class="v red" id="simLoss">−0,00 USDT</div></div><div class="result"><div class="label">Mis de côté</div><div class="v" id="simSaved">0,00 USDT</div></div></div><p class="mini">V2 ne passe aucun trade simulé automatiquement par défaut. Les chiffres évoluent seulement si un module de simulation explicite est ajouté ; aucun bénéfice fictif n’est généré pour remplir l’objectif.</p></section>
+<section class="panel" id="simulatorPanel">
+<div class="panelhead"><h2>MOTEUR DE SIMULATION</h2><span class="tag" id="simModeTag">ARRÊTÉ</span></div>
+<p class="sub">Automatique contrôlé : seules les paires Spot USDT avec variation 24 h positive de 3 à 8 %, volume coté d’au moins 1 000 000 USDT et cours frais peuvent être candidates. Les règles sont expérimentales et non validées.</p>
+<div class="results">
+<div class="result"><div class="label">Capital virtuel disponible</div><div class="v" id="simBalance">1 000,00 USDT</div></div>
+<div class="result"><div class="label">Équité estimée</div><div class="v" id="simEquity">1 000,00 USDT</div></div>
+<div class="result"><div class="label">P&L net réalisé</div><div class="v green" id="simProfit">+0,00 USDT</div></div>
+<div class="result"><div class="label">Pertes réalisées cumulées</div><div class="v red" id="simLoss">0,00 USDT</div></div>
+<div class="result"><div class="label">P&L latent net</div><div class="v" id="simUnrealized">0,00 USDT</div></div>
+<div class="result"><div class="label">Frais simulés cumulés</div><div class="v" id="simFees">0,00 USDT</div></div>
+<div class="result"><div class="label">Capital disponible</div><div class="v" id="simAvailable">1 000,00 USDT</div></div>
+<div class="result"><div class="label">Positions ouvertes</div><div class="v" id="simOpenCount">0 / 3</div></div>
+</div>
+<div class="toolbar" style="margin-top:12px">
+<button class="btn primary" id="toggleSim">▶ Activer la simulation</button>
+<button class="btn mutebtn" id="exportTrades">Exporter les transactions</button>
+<button class="btn danger" id="resetSim">Réinitialiser simulation</button>
+</div>
+<div class="mini">Hypothèses de départ : frais 0,10 % par côté, slippage 0,05 % par côté, stop-loss 2 %, take-profit 4 %, risque théorique visé de 1 % de l’équité par position, 3 positions ouvertes maximum. Le risque réalisé peut dépasser la cible en cas de saut de prix ou d’écart d’exécution.</div>
+<div class="panelhead" style="margin-top:16px"><h2>POSITIONS OUVERTES</h2><span class="tag" id="openPositionTag">0 position</span></div>
+<div id="openPositions" class="signal-list"><div class="log-empty">Aucune position simulée ouverte.</div></div>
+<div class="panelhead" style="margin-top:16px"><h2>HISTORIQUE DES TRANSACTIONS SIMULÉES</h2><span class="tag" id="closedPositionTag">0 clôture</span></div>
+<div class="toolbar"><select id="tradeFilter" aria-label="Filtrer les transactions"><option value="ALL">Toutes les transactions</option><option value="CLOSED">Clôturées</option><option value="OPEN">Ouvertes</option></select><input id="tradeSearch" placeholder="Rechercher un symbole ou un motif…" aria-label="Rechercher une transaction"></div>
+<div id="tradeHistory" class="signal-list"><div class="log-empty">Aucune transaction simulée. Les résultats apparaîtront après activation et remplissage des critères.</div></div>
+<p class="mini">Historique conservé sur cet appareil uniquement. Aucun ordre réel ni clé API privée n’est utilisé.</p>
+</section>
 
 <section class="panel"><div class="panelhead"><h2>MARCHÉS CRYPTO — BINANCE SPOT</h2><span class="tag" id="marketUpdated">Pas encore actualisé</span></div><div class="toolbar"><input id="search" type="search" placeholder="Rechercher BTC, ETH, SOL…" aria-label="Rechercher une crypto"><select id="sort"><option value="volume">Volume décroissant</option><option value="change">Variation décroissante</option><option value="price">Prix décroissant</option><option value="symbol">Symbole A–Z</option></select><button id="clearSearch">Effacer</button></div><div class="tablewrap"><table><thead><tr><th>Actif</th><th>Prix (USDT)</th><th>24 h</th><th>Volume USDT</th></tr></thead><tbody id="marketRows"><tr><td class="empty" colspan="4">Chargement des données publiques Binance…</td></tr></tbody></table></div><div class="mini">Les cours sont publics et peuvent être retardés ou indisponibles. Ce tableau ne constitue pas un conseil financier.</div></section>
 
@@ -99,7 +129,11 @@
 const $ = id => document.getElementById(id);
 const fmt = (n, digits=2) => Number(n).toLocaleString('fr-FR',{minimumFractionDigits:digits,maximumFractionDigits:digits});
 let markets = [], lastDataAt = 0, botOn = false, timer = null, countdownTimer = null, nextAt = 0, signals = [];
-let target = 5, sim = {start:1000,balance:1000,profit:0,loss:0,saved:0};
+let target = 5;
+const SIM_KEY='fxs_v22_simulation';
+const SIM_CFG={start:1000,riskPct:0.01,stopPct:0.02,takePct:0.04,feeRate:0.001,slippageRate:0.0005,minChange:3,maxChange:8,minQuoteVolume:1000000,maxOpen:3,maxHoldMs:24*60*60*1000};
+let simOn=false, sim={start:1000,available:1000,realizedNet:0,realizedLoss:0,fees:0,positions:[],trades:[],seenCandidates:{},nextId:1};
+try{const stored=JSON.parse(localStorage.getItem(SIM_KEY)||'null');if(stored&&stored.start===1000&&Array.isArray(stored.positions)&&Array.isArray(stored.trades)){sim={...sim,...stored};}}catch(e){}
 
 const CYCLE_MS = 60000, STALE_MS = 90000;
 const LOG_KEY='fxs_v22_activity_log';
@@ -143,11 +177,75 @@ function renderSignals(){
  $('signalCount').textContent=signals.length;
  $('signals').innerHTML=signals.length?signals.slice(0,8).map(s=>`<div class="signal"><div><strong>${s.symbol} <span class="${s.change>=0?'green':'red'}">${s.change>=0?'+':''}${fmt(s.change,2)}%</span></strong><small>${s.note} · ${new Date(s.at).toLocaleTimeString('fr-FR')}</small></div><span class="pill">À examiner</span></div>`).join(''):'<div class="sub">Aucun signal selon le filtre simple actuel.</div>';
 }
+function persistSim(){try{localStorage.setItem(SIM_KEY,JSON.stringify(sim));}catch(e){addLog('WARNING','SIMULATION','Stockage local indisponible : la persistance des positions peut échouer.');}}
+function simFee(notional){return Math.max(0,notional)*SIM_CFG.feeRate;}
+function simSlip(price,side){return price*(side==='BUY'?1+SIM_CFG.slippageRate:1-SIM_CFG.slippageRate);}
+function currentMarket(symbol){return markets.find(m=>m.symbol===symbol&&Number.isFinite(m.price)&&m.price>0);}
+function calcPositionMetrics(p,markPrice){const exitPx=simSlip(markPrice,'SELL'),gross=(exitPx-p.entryExec)*p.qty,exitFee=simFee(exitPx*p.qty);return {gross,exitFee,net:gross-exitFee-p.entryFee,mark:markPrice};}
 function renderSim(){
- $('monthGain').textContent=(sim.profit>=0?'+':'')+fmt(sim.profit)+' USDT';$('goalTarget').textContent=fmt(target)+' USDT';
- const pct=Math.max(0,Math.min(100,sim.profit/target*100));$('goalBar').style.width=pct+'%';
- $('goalText').textContent=`${fmt(pct,1)} % de l’objectif de référence · il reste ${fmt(Math.max(0,target-sim.profit))} USDT. Aucun trade n’est déclenché pour l’atteindre.`;
- $('simBalance').textContent=fmt(sim.balance)+' USDT';$('simProfit').textContent=(sim.profit>=0?'+':'')+fmt(sim.profit)+' USDT';$('simLoss').textContent='−'+fmt(sim.loss)+' USDT';$('simSaved').textContent=fmt(sim.saved)+' USDT';
+ const open=sim.positions;
+ const unrealized=open.reduce((sum,p)=>{const m=currentMarket(p.symbol);return sum+(m?calcPositionMetrics(p,m.price).net:0);},0);
+ const equity=sim.available+open.reduce((sum,p)=>{const m=currentMarket(p.symbol);return sum+(m?m.price*p.qty:0);},0);
+ $('simBalance').textContent=fmt(sim.available)+' USDT';$('simEquity').textContent=fmt(equity)+' USDT';
+ $('simProfit').textContent=(sim.realizedNet>=0?'+':'')+fmt(sim.realizedNet)+' USDT';$('simLoss').textContent=fmt(sim.realizedLoss)+' USDT';
+ $('simUnrealized').textContent=(unrealized>=0?'+':'')+fmt(unrealized)+' USDT';$('simFees').textContent=fmt(sim.fees)+' USDT';
+ $('simAvailable').textContent=fmt(sim.available)+' USDT';$('simOpenCount').textContent=open.length+' / '+SIM_CFG.maxOpen;
+ $('simModeTag').textContent=simOn?'AUTOMATIQUE ACTIF':'ARRÊTÉ';$('toggleSim').textContent=simOn?'■ Arrêter la simulation':'▶ Activer la simulation';$('toggleSim').classList.toggle('danger',simOn);
+ $('openPositionTag').textContent=open.length+' position(s)';$('closedPositionTag').textContent=sim.trades.filter(t=>t.status==='CLOSED').length+' clôture(s)';
+ $('openPositions').innerHTML=open.length?open.slice().sort((a,b)=>b.openedAt-a.openedAt).map(p=>{
+  const m=currentMarket(p.symbol),price=m?m.price:null,metrics=price?calcPositionMetrics(p,price):null;
+  return `<div class="trade-card"><div class="trade-head"><strong>${escapeHtml(p.symbol)}</strong><span class="trade-state">OUVERTE · SIMULATION</span></div><div class="trade-grid"><span>Entrée simulée</span><strong>${fmt(p.entryExec,p.entryExec<1?6:4)}</strong><span>Dernier cours observé</span><strong>${price?fmt(price,price<1?6:4):'Indisponible'}</strong><span>Quantité</span><strong>${fmt(p.qty,6)}</strong><span>Stop indicatif</span><strong>${fmt(p.stopPrice,p.stopPrice<1?6:4)}</strong><span>Take-profit indicatif</span><strong>${fmt(p.takePrice,p.takePrice<1?6:4)}</strong><span>P&L latent net estimé</span><strong class="${metrics&&metrics.net>=0?'green':'red'}">${metrics?(metrics.net>=0?'+':'')+fmt(metrics.net)+' USDT':'Non calculable'}</strong><span>Risque prévu</span><strong>${fmt(p.riskBudget)} USDT</strong></div><div class="trade-reason">Ouverture : ${new Date(p.openedAt).toLocaleString('fr-FR')} · ${escapeHtml(p.reason)}</div></div>`;
+ }).join(''):'<div class="log-empty">Aucune position simulée ouverte.</div>';
+ const filter=$('tradeFilter').value,query=$('tradeSearch').value.trim().toLowerCase();
+ const all=sim.trades.slice().sort((a,b)=>(b.closedAt||b.openedAt)-(a.closedAt||a.openedAt));
+ const rows=all.filter(t=>(filter==='ALL'||(filter==='CLOSED'?t.status==='CLOSED':t.status==='OPEN'))&&(!query||(t.symbol+' '+t.reason+' '+(t.closeReason||'')).toLowerCase().includes(query))).slice(0,40);
+ $('tradeHistory').innerHTML=rows.length?rows.map(t=>{
+  const closed=t.status==='CLOSED';
+  return `<div class="trade-card"><div class="trade-head"><strong>${escapeHtml(t.symbol)}</strong><span class="trade-state">${closed?'CLÔTURÉE':'OUVERTE'} · SIMULATION</span></div><div class="trade-grid"><span>Entrée</span><strong>${fmt(t.entryExec,t.entryExec<1?6:4)}</strong><span>Sortie</span><strong>${closed?fmt(t.exitExec,t.exitExec<1?6:4):'—'}</strong><span>Quantité</span><strong>${fmt(t.qty,6)}</strong><span>Frais cumulés</span><strong>${fmt(t.totalFees||t.entryFee)} USDT</strong><span>Résultat net</span><strong class="${closed?(t.net>=0?'green':'red'):'sub'}">${closed?(t.net>=0?'+':'')+fmt(t.net)+' USDT':'Non réalisé'}</strong><span>Risque prévu</span><strong>${fmt(t.riskBudget)} USDT</strong></div><div class="trade-reason">${escapeHtml(t.reason)}${closed?' · Clôture : '+escapeHtml(t.closeReason||'Règle de sortie')+' · '+new Date(t.closedAt).toLocaleString('fr-FR'):''}</div></div>`;
+ }).join(''):'<div class="log-empty">Aucune transaction ne correspond aux filtres.</div>';
+ const now=new Date(),netMonth=sim.trades.filter(t=>t.status==='CLOSED'&&t.closedAt&&new Date(t.closedAt).getMonth()===now.getMonth()&&new Date(t.closedAt).getFullYear()===now.getFullYear()).reduce((s,t)=>s+t.net,0);
+ $('monthGain').textContent=(netMonth>=0?'+':'')+fmt(netMonth)+' USDT';$('goalTarget').textContent=fmt(target)+' USDT';
+ const pct=Math.max(0,Math.min(100,netMonth/target*100));$('goalBar').style.width=pct+'%';
+ $('goalText').textContent=`${fmt(pct,1)} % de l’objectif de référence · résultat net réalisé du mois : ${fmt(netMonth)} USDT. L’objectif ne déclenche jamais d’opération.`;
+ persistSim();
+}
+function openSimPosition(m){
+ if(!simOn||!m||!lastDataAt||Date.now()-lastDataAt>STALE_MS)return false;
+ if(!m.symbol.endsWith('USDT')||m.change<SIM_CFG.minChange||m.change>SIM_CFG.maxChange||m.quoteVolume<SIM_CFG.minQuoteVolume)return false;
+ if(sim.positions.length>=SIM_CFG.maxOpen||sim.positions.some(p=>p.symbol===m.symbol))return false;
+ if(sim.seenCandidates[m.symbol]&&Date.now()-sim.seenCandidates[m.symbol]<30*60*1000)return false;
+ const equity=sim.available+sim.positions.reduce((sum,p)=>{const live=currentMarket(p.symbol);return sum+(live?live.price*p.qty:0);},0);
+ const riskBudget=Math.max(0,Math.min(equity*SIM_CFG.riskPct,sim.available));
+ const rawEntry=m.price,entryExec=simSlip(rawEntry,'BUY'),stopPrice=rawEntry*(1-SIM_CFG.stopPct),takePrice=rawEntry*(1+SIM_CFG.takePct);
+ const riskPerUnit=entryExec-stopPrice;if(!(riskPerUnit>0)||riskBudget<=0)return false;
+ let qty=riskBudget/riskPerUnit;qty=Math.min(qty,sim.available/(entryExec*(1+SIM_CFG.feeRate)));
+ if(!(qty>0)||!Number.isFinite(qty))return false;
+ const cost=entryExec*qty,fee=simFee(cost);if(cost+fee>sim.available+1e-8)return false;
+ const p={id:'SIM-'+String(sim.nextId++).padStart(5,'0'),symbol:m.symbol,openedAt:Date.now(),entryObserved:rawEntry,entryExec,qty,stopPrice,takePrice,entryFee:fee,riskBudget:Math.min(riskBudget,riskPerUnit*qty),reason:`Variation 24 h +${fmt(m.change)} %, volume coté ${fmt(m.quoteVolume,0)} USDT ; critères expérimentaux validés.`};
+ sim.available-=cost+fee;sim.fees+=fee;sim.positions.push(p);sim.trades.unshift({...p,status:'OPEN',totalFees:fee});sim.seenCandidates[m.symbol]=Date.now();
+ addLog('INFO',m.symbol,`Position SIMULATED_OPEN ${p.id} : entrée simulée ${fmt(entryExec)} USDT, quantité ${fmt(qty,6)}, stop ${fmt(stopPrice)}, take-profit ${fmt(takePrice)}. Aucun ordre réel.`);
+ renderSim();return true;
+}
+function closeSimPosition(p,markPrice,reason){
+ const idx=sim.positions.findIndex(x=>x.id===p.id);if(idx<0||!Number.isFinite(markPrice)||markPrice<=0)return;
+ const exitExec=simSlip(markPrice,'SELL'),gross=(exitExec-p.entryExec)*p.qty,exitFee=simFee(exitExec*p.qty),net=gross-p.entryFee-exitFee;
+ sim.available+=exitExec*p.qty-exitFee;sim.fees+=exitFee;sim.realizedNet+=net;if(net<0)sim.realizedLoss+=-net;sim.positions.splice(idx,1);
+ const t=sim.trades.find(x=>x.id===p.id);if(t){t.status='CLOSED';t.closedAt=Date.now();t.exitObserved=markPrice;t.exitExec=exitExec;t.exitFee=exitFee;t.totalFees=p.entryFee+exitFee;t.gross=gross;t.net=net;t.closeReason=reason;}
+ addLog('INFO',p.symbol,`Position SIMULATED_CLOSED ${p.id} : ${reason}. Sortie simulée ${fmt(exitExec)}, P&L net ${net>=0?'+':''}${fmt(net)} USDT, frais cumulés ${fmt(p.entryFee+exitFee)} USDT.`);
+}
+function processSimulation(){
+ if(!simOn||!lastDataAt||Date.now()-lastDataAt>STALE_MS)return;
+ let changed=false;
+ for(const p of sim.positions.slice()){
+  const m=currentMarket(p.symbol);if(!m)continue;let reason=null;
+  if(m.price<=p.stopPrice)reason='Stop-loss touché/dépassé au cours observé';
+  else if(m.price>=p.takePrice)reason='Take-profit touché/dépassé au cours observé';
+  else if(Date.now()-p.openedAt>=SIM_CFG.maxHoldMs)reason='Durée maximale de détention atteinte';
+  if(reason){closeSimPosition(p,m.price,reason);changed=true;}
+ }
+ const candidates=markets.filter(m=>m.symbol.endsWith('USDT')&&m.change>=SIM_CFG.minChange&&m.change<=SIM_CFG.maxChange&&m.quoteVolume>=SIM_CFG.minQuoteVolume).sort((a,b)=>b.quoteVolume-a.quoteVolume);
+ for(const m of candidates){if(sim.positions.length>=SIM_CFG.maxOpen)break;if(openSimPosition(m))changed=true;}
+ if(changed)renderSim();
 }
 function updateCountdown(){if(!botOn){$('nextRun').textContent='—';return;}const left=Math.max(0,nextAt-Date.now());$('nextRun').textContent=Math.ceil(left/1000)+' s';}
 async function refreshData(){
@@ -165,6 +263,7 @@ async function refreshData(){
    addLog('DATA','BINANCE',`${markets.length} symboles reçus ; ${markets.filter(m=>m.symbol.endsWith('USDT')).length} paires USDT disponibles.`);
    addLog('INFO','ANALYSE',`Cycle terminé : ${markets.length} symboles parcourus.`);
    signals.slice(0,5).forEach(sig=>addLog('SIGNAL',sig.symbol,`${sig.note} (${sig.change>0?'+':''}${fmt(sig.change)} % sur 24 h). Signal descriptif uniquement ; aucune transaction exécutée.`));
+   processSimulation();
    $('lastAnalysis').textContent='Dernière analyse : '+new Date(lastDataAt).toLocaleString('fr-FR')+' · prochaine tentative selon mode automatique';
  }catch(e){
    addLog('ERROR','BINANCE','Échec de récupération des données : '+(e&&e.message?e.message:'erreur inconnue'));
@@ -184,10 +283,13 @@ $('exportLog').addEventListener('click',()=>{const blob=new Blob([JSON.stringify
 
 $('search').addEventListener('input',renderMarkets);$('sort').addEventListener('change',renderMarkets);$('clearSearch').addEventListener('click',()=>{$('search').value='';renderMarkets();});
 $('setTarget').addEventListener('click',()=>{const n=Number($('targetInput').value);if(Number.isFinite(n)&&n>0&&n<=1000000){target=n;renderSim();}else alert('Entre un objectif positif inférieur ou égal à 1 000 000 USDT.');});
-$('resetSim').addEventListener('click',()=>{if(confirm('Réinitialiser les résultats de simulation à 1 000 USDT ?')){sim={start:1000,balance:1000,profit:0,loss:0,saved:0};renderSim();}});
+$('toggleSim').addEventListener('click',()=>{simOn=!simOn;addLog(simOn?'INFO':'WARNING','SIMULATION',simOn?'Simulation automatique contrôlée activée. Aucun ordre réel.':'Simulation automatique arrêtée.');renderSim();if(simOn)refreshData();});
+$('tradeFilter').addEventListener('change',renderSim);$('tradeSearch').addEventListener('input',renderSim);
+$('exportTrades').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({config:SIM_CFG,exportedAt:new Date().toISOString(),simulation:sim},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='fx-sentinel-simulation-v22.json';a.click();URL.revokeObjectURL(url);});
+$('resetSim').addEventListener('click',()=>{if(confirm('Réinitialiser le capital, les positions et tout l’historique de simulation à 1 000 USDT ? Cette action est irréversible sur cet appareil.')){simOn=false;sim={start:1000,available:1000,realizedNet:0,realizedLoss:0,fees:0,positions:[],trades:[],seenCandidates:{},nextId:1};persistSim();addLog('WARNING','SIMULATION','Simulation réinitialisée à 1 000 USDT ; historique et positions supprimés.');renderSim();}});
 countdownTimer=setInterval(updateCountdown,1000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden && botOn && (!lastDataAt || Date.now()-lastDataAt>STALE_MS)){clearTimeout(timer);cycle();}});
-renderLog();addLog('INFO','SYSTÈME','FX SENTINEL V2.2 initialisé. Mode observation : aucun ordre réel ni trade simulé automatique.');renderSim();refreshData();
+renderLog();addLog('INFO','SYSTÈME','FX SENTINEL V2.2 initialisé. Ordres réels désactivés ; simulation automatique contrôlée arrêtée par défaut.');renderSim();refreshData();
 })();
 </script>
 </body></html>
