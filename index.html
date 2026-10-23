@@ -110,7 +110,7 @@
 <button class="btn mutebtn" id="exportTrades">Exporter les transactions</button>
 <button class="btn danger" id="resetSim">Réinitialiser simulation</button>
 </div>
-<div class="mini">Hypothèses de départ : frais 0,10 % par côté, slippage 0,05 % par côté, stop-loss 2 %, take-profit 4 %, risque théorique visé de 1 % de l’équité par position, 3 positions ouvertes maximum. Le risque réalisé peut dépasser la cible en cas de saut de prix ou d’écart d’exécution.</div>
+<div class="mini">Hypothèses : frais 0,10 % par côté, slippage 0,05 % par côté, stop indicatif 2 %, take-profit indicatif 4 %, budget de risque visé de 1 % de l’équité par position (perte estimée au stop incluant frais et slippage), 3 positions maximum. Le risque réalisé peut dépasser le budget en cas de gap, de liquidité insuffisante ou de cours manquant. Les positions déjà enregistrées sur cet appareil sont conservées ; le nouveau calcul s’applique aux nouvelles ouvertures.</div>
 <div class="panelhead" style="margin-top:16px"><h2>POSITIONS OUVERTES</h2><span class="tag" id="openPositionTag">0 position</span></div>
 <div id="openPositions" class="signal-list"><div class="log-empty">Aucune position simulée ouverte.</div></div>
 <div class="panelhead" style="margin-top:16px"><h2>HISTORIQUE DES TRANSACTIONS SIMULÉES</h2><span class="tag" id="closedPositionTag">0 clôture</span></div>
@@ -122,7 +122,7 @@
 <section class="panel"><div class="panelhead"><h2>MARCHÉS CRYPTO — BINANCE SPOT</h2><span class="tag" id="marketUpdated">Pas encore actualisé</span></div><div class="toolbar"><input id="search" type="search" placeholder="Rechercher BTC, ETH, SOL…" aria-label="Rechercher une crypto"><select id="sort"><option value="volume">Volume décroissant</option><option value="change">Variation décroissante</option><option value="price">Prix décroissant</option><option value="symbol">Symbole A–Z</option></select><button id="clearSearch">Effacer</button></div><div class="tablewrap"><table><thead><tr><th>Actif</th><th>Prix (USDT)</th><th>24 h</th><th>Volume USDT</th></tr></thead><tbody id="marketRows"><tr><td class="empty" colspan="4">Chargement des données publiques Binance…</td></tr></tbody></table></div><div class="mini">Les cours sont publics et peuvent être retardés ou indisponibles. Ce tableau ne constitue pas un conseil financier.</div></section>
 
 <section class="panel"><div class="panelhead"><h2>SIGNAUX INFORMATIFS</h2><span class="tag">FILTRE SIMPLE · NON PRÉDICTIF</span></div><div class="signal-list" id="signals"><div class="sub">Les signaux s’afficheront après réception des données.</div></div><div class="mini">Signal de variation/activité uniquement ; aucun backtest ni validation de performance n’est revendiqué.</div></section>
-<div class="footer">FX SENTINEL V2.2 · Prototype gratuit · Aucune clé privée · Aucune transaction réelle.<br>La surveillance continue nécessite un service serveur fiable ; un navigateur mobile peut suspendre les tâches en arrière-plan.</div>
+<div class="footer">FX SENTINEL V2.2 · Correctif simulation R1 · Prototype gratuit · Aucune clé privée · Aucune transaction réelle.<br>La surveillance continue nécessite un service serveur fiable ; un navigateur mobile peut suspendre les tâches en arrière-plan.</div>
 </main>
 <script>
 (() => {
@@ -217,11 +217,19 @@ function openSimPosition(m){
  const equity=sim.available+sim.positions.reduce((sum,p)=>{const live=currentMarket(p.symbol);return sum+(live?live.price*p.qty:0);},0);
  const riskBudget=Math.max(0,Math.min(equity*SIM_CFG.riskPct,sim.available));
  const rawEntry=m.price,entryExec=simSlip(rawEntry,'BUY'),stopPrice=rawEntry*(1-SIM_CFG.stopPct),takePrice=rawEntry*(1+SIM_CFG.takePct);
- const riskPerUnit=entryExec-stopPrice;if(!(riskPerUnit>0)||riskBudget<=0)return false;
- let qty=riskBudget/riskPerUnit;qty=Math.min(qty,sim.available/(entryExec*(1+SIM_CFG.feeRate)));
+ // Budget de risque tout compris au stop : perte de prix + slippage de sortie + frais entrée/sortie.
+ // Le stop reste indicatif : un gap ou une liquidité insuffisante peut dépasser ce budget.
+ const stopExec=simSlip(stopPrice,'SELL');
+ const entryFeePerUnit=entryExec*SIM_CFG.feeRate;
+ const exitFeePerUnit=stopExec*SIM_CFG.feeRate;
+ const riskPerUnitAllIn=(entryExec-stopExec)+entryFeePerUnit+exitFeePerUnit;
+ if(!(riskPerUnitAllIn>0)||riskBudget<=0)return false;
+ const qtyByRisk=riskBudget/riskPerUnitAllIn;
+ const qtyByCash=sim.available/(entryExec*(1+SIM_CFG.feeRate));
+ const qty=Math.min(qtyByRisk,qtyByCash);
  if(!(qty>0)||!Number.isFinite(qty))return false;
  const cost=entryExec*qty,fee=simFee(cost);if(cost+fee>sim.available+1e-8)return false;
- const p={id:'SIM-'+String(sim.nextId++).padStart(5,'0'),symbol:m.symbol,openedAt:Date.now(),entryObserved:rawEntry,entryExec,qty,stopPrice,takePrice,entryFee:fee,riskBudget:Math.min(riskBudget,riskPerUnit*qty),reason:`Variation 24 h +${fmt(m.change)} %, volume coté ${fmt(m.quoteVolume,0)} USDT ; critères expérimentaux validés.`};
+ const p={id:'SIM-'+String(sim.nextId++).padStart(5,'0'),symbol:m.symbol,openedAt:Date.now(),entryObserved:rawEntry,entryExec,qty,stopPrice,takePrice,entryFee:fee,riskBudget:Math.min(riskBudget,riskPerUnitAllIn*qty),riskModel:'all-in-stop-v2',reason:`Variation 24 h +${fmt(m.change)} %, volume coté ${fmt(m.quoteVolume,0)} USDT ; critères expérimentaux validés.`};
  sim.available-=cost+fee;sim.fees+=fee;sim.positions.push(p);sim.trades.unshift({...p,status:'OPEN',totalFees:fee});sim.seenCandidates[m.symbol]=Date.now();
  addLog('INFO',m.symbol,`Position SIMULATED_OPEN ${p.id} : entrée simulée ${fmt(entryExec)} USDT, quantité ${fmt(qty,6)}, stop ${fmt(stopPrice)}, take-profit ${fmt(takePrice)}. Aucun ordre réel.`);
  renderSim();return true;
