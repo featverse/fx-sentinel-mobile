@@ -17,6 +17,19 @@
 .auto-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:12px}.auto-state{font-size:21px;font-weight:850;margin:5px 0}.auto-desc{color:var(--muted);font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.mini{font-size:11px;color:var(--muted);margin-top:9px}.markets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.marketbox{background:#08162b;border:1px solid #183654;border-radius:14px;padding:12px;min-height:125px;position:relative;overflow:hidden}.orbit{height:85px;position:relative;display:flex;align-items:center;justify-content:center;margin:4px 0}.orb{width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#0b8effaa,#00357b33 58%,transparent 72%);position:relative;animation:pulse 3s infinite}.orb:before,.orb:after{content:"";position:absolute;border:1px dotted #168bff99;border-radius:50%;inset:-13px;transform:rotate(30deg) scaleY(.45)}.orb:after{inset:-20px;transform:rotate(-25deg) scaleY(.45)}.beam{position:absolute;width:75px;height:18px;left:calc(50% - 70px);top:40px;background:linear-gradient(90deg,transparent,#168bff77,transparent);transform:rotate(-20deg);animation:sweep 4s infinite}.orb.goldorb{background:radial-gradient(circle,#f4c96bcc,#f4c96b22 60%,transparent 72%)}.orb.goldorb:before,.orb.goldorb:after{border-color:#f4c96b99}.marketname{font-weight:800}.marketstats{font-size:11px;color:var(--muted)}@keyframes pulse{50%{filter:brightness(1.5);transform:scale(1.04)}}@keyframes sweep{50%{transform:translateX(28px) rotate(15deg)}}
 .progress{height:9px;background:#203d6b;border-radius:999px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,#35dca3,#55aaff);width:0%}.goalrow{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}.goalamount{font-size:28px;font-weight:900;color:var(--green)}.results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.result{padding:12px;border-radius:12px;background:#18325c}.result .v{font-size:19px;font-weight:850;margin-top:5px}.tablewrap{overflow:auto;border-radius:10px}table{border-collapse:collapse;width:100%;min-width:570px;font-variant-numeric:tabular-nums}th,td{padding:11px 10px;text-align:right;border-bottom:1px solid #1b2c40;white-space:nowrap}th{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.5px}th:first-child,td:first-child{text-align:left}.coin{font-weight:750}.symbol{font-size:11px;color:var(--muted);margin-left:6px}.empty{text-align:center!important;color:var(--muted);padding:28px!important}.footer{color:var(--muted);font-size:11px;text-align:center;margin:22px 0}.signal-list{display:grid;gap:8px}.signal{border:1px solid var(--line);background:#0b1929;border-radius:11px;padding:10px 12px;display:flex;justify-content:space-between;gap:10px;align-items:center}.signal strong{display:block}.signal small{color:var(--muted)}.pill{font-size:10px;padding:4px 7px;border-radius:999px;background:#173b55;color:#9dd7ff;white-space:nowrap}
 @media(max-width:720px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.auto-grid{grid-template-columns:1fr}.markets{grid-template-columns:1fr}.marketbox{min-height:110px}.orbit{height:72px}.results{grid-template-columns:repeat(2,minmax(0,1fr))}.value{font-size:21px}.wrap{padding:13px 10px 35px}}
+
+.log-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.log-tools input,.log-tools select{width:100%;min-width:0;background:#081728;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit}
+.log-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.log-chip{border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:12px}
+.log-list{display:grid;gap:8px}
+.log-entry{background:#081728;border:1px solid var(--line);border-radius:10px;padding:11px}
+.log-meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-bottom:5px}
+.log-type{font-weight:800;letter-spacing:.05em}
+.log-type.INFO{color:var(--blue)}.log-type.DATA{color:var(--green)}.log-type.SIGNAL{color:var(--gold)}.log-type.WARNING{color:var(--gold)}.log-type.ERROR{color:var(--red)}
+.log-empty{padding:16px;color:var(--muted);text-align:center}
+@media(max-width:520px){.log-tools{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -40,6 +53,25 @@
 <div class="marketbox"><div class="marketname">Bourse</div><div class="orbit"><span class="beam"></span><span class="orb"></span></div><div class="marketstats">Démo · flux réel non connecté</div></div>
 </div><div class="mini">Les compteurs « vus » désignent les symboles reçus de la source, pas une promesse de couverture de tous les marchés mondiaux.</div></section>
 
+
+<section class="panel" id="activityPanel">
+ <div class="panelhead"><h2>JOURNAL D’ACTIVITÉ</h2><span class="tag" id="logCount">0 événements</span></div>
+ <p class="muted">Historique local des cycles, données reçues, signaux et erreurs. Il ne représente pas des transactions exécutées.</p>
+ <div class="log-summary">
+  <span class="log-chip" id="logInfoCount">INFO 0</span><span class="log-chip" id="logDataCount">DATA 0</span>
+  <span class="log-chip" id="logSignalCount">SIGNAL 0</span><span class="log-chip" id="logWarnCount">WARNING 0</span><span class="log-chip" id="logErrorCount">ERROR 0</span>
+ </div>
+ <div class="log-tools">
+  <select id="logFilter" aria-label="Filtrer par type">
+   <option value="ALL">Tous les événements</option><option>INFO</option><option>DATA</option><option>SIGNAL</option><option>WARNING</option><option>ERROR</option>
+  </select>
+  <input id="logSearch" placeholder="Rechercher un actif ou un détail…" aria-label="Rechercher dans le journal">
+ </div>
+ <div class="toolbar"><button class="btn" id="exportLog">Exporter le journal</button><button class="btn" id="clearLog">Effacer le journal</button></div>
+ <div class="log-list" id="logList"><div class="log-empty">Chargement du journal…</div></div>
+ <p class="muted">Conservation sur cet appareil uniquement. Pour un historique durable 24 h/24, l’étape backend sera nécessaire.</p>
+</section>
+
 <section class="panel"><div class="panelhead"><h2>OBJECTIF MENSUEL — SIMULATION</h2><span class="tag">PAS UNE PROMESSE DE RENDEMENT</span></div><div class="goalrow"><div><div class="label">Gain simulé net</div><div class="goalamount" id="monthGain">+0,00 USDT</div></div><div><div class="label">Objectif de référence</div><div><strong id="goalTarget">5,00 USDT</strong></div></div></div><div class="progress"><span id="goalBar"></span></div><div id="goalText" class="sub">La simulation commence à 0. Les objectifs ne déclenchent jamais d’opération.</div><div class="toolbar" style="margin-top:12px"><label class="sub" for="targetInput" style="align-self:center">Objectif USDT</label><input id="targetInput" type="number" min="0.01" max="1000000" step="0.01" value="5" aria-label="Objectif mensuel USDT"><button id="setTarget">Appliquer</button><button id="resetSim" class="danger">Réinitialiser simulation</button></div></section>
 
 <section class="panel"><div class="panelhead"><h2>RÉSULTATS — SAISON DE SIMULATION</h2><span class="tag">CAPITAL VIRTUEL</span></div><div class="results">
@@ -56,8 +88,30 @@ const $ = id => document.getElementById(id);
 const fmt = (n, digits=2) => Number(n).toLocaleString('fr-FR',{minimumFractionDigits:digits,maximumFractionDigits:digits});
 let markets = [], lastDataAt = 0, botOn = false, timer = null, countdownTimer = null, nextAt = 0, signals = [];
 let target = 5, sim = {start:1000,balance:1000,profit:0,loss:0,saved:0};
+
 const CYCLE_MS = 60000, STALE_MS = 90000;
-function setConnection(ok, text){$('connectionDot').className='dot '+(ok?'ok':'bad');$('connectionText').textContent=text;}
+const LOG_KEY='fxs_v21_activity_log';
+let activityLog=[];
+try{activityLog=JSON.parse(localStorage.getItem(LOG_KEY)||'[]');if(!Array.isArray(activityLog))activityLog=[];}catch(e){activityLog=[];}
+function addLog(type,market,detail){
+ const item={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),at:new Date().toISOString(),type,market:market||'SYSTÈME',detail:String(detail||'')};
+ activityLog.unshift(item);activityLog=activityLog.slice(0,300);
+ try{localStorage.setItem(LOG_KEY,JSON.stringify(activityLog));}catch(e){}
+ renderLog();
+}
+function renderLog(){
+ const counts={INFO:0,DATA:0,SIGNAL:0,WARNING:0,ERROR:0};activityLog.forEach(x=>{if(counts[x.type]!==undefined)counts[x.type]++;});
+ $('logCount').textContent=activityLog.length+' événements';
+ $('logInfoCount').textContent='INFO '+counts.INFO;$('logDataCount').textContent='DATA '+counts.DATA;
+ $('logSignalCount').textContent='SIGNAL '+counts.SIGNAL;$('logWarnCount').textContent='WARNING '+counts.WARNING;$('logErrorCount').textContent='ERROR '+counts.ERROR;
+ const filter=$('logFilter').value,query=$('logSearch').value.trim().toLowerCase();
+ const rows=activityLog.filter(x=>(filter==='ALL'||x.type===filter)&&(!query||(x.market+' '+x.detail).toLowerCase().includes(query))).slice(0,100);
+ $('logList').innerHTML=rows.length?rows.map(x=>`<article class="log-entry"><div class="log-meta"><span>${new Date(x.at).toLocaleString('fr-FR')}</span><span>${escapeHtml(x.market)}</span></div><div class="log-type ${x.type}">${x.type}</div><div>${escapeHtml(x.detail)}</div></article>`).join(''):'<div class="log-empty">Aucun événement correspondant.</div>';
+}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+let lastConnectionState=null;
+function setConnection(ok, text){$('connectionDot').className='dot '+(ok?'ok':'bad');$('connectionText').textContent=text;if(lastConnectionState!==ok){addLog(ok?'DATA':'WARNING','BINANCE',text);lastConnectionState=ok;}}
 function renderMarkets(){
  const query=$('search').value.trim().toUpperCase();
  let rows=markets.filter(m=>m.symbol.endsWith('USDT') && (!query || m.symbol.includes(query)));
@@ -89,24 +143,33 @@ async function refreshData(){
    lastDataAt=Date.now();setConnection(true,'Données publiques Binance reçues');$('freshness').textContent='À jour';$('freshHint').textContent='Reçu à '+new Date(lastDataAt).toLocaleTimeString('fr-FR');$('marketUpdated').textContent='Mis à jour '+new Date(lastDataAt).toLocaleTimeString('fr-FR');
    // Signals are descriptive filters only; no trading decisions are executed.
    signals=markets.filter(m=>m.symbol.endsWith('USDT') && Math.abs(m.change)>=3 && m.quoteVolume>=1000000).sort((a,b)=>Math.abs(b.change)-Math.abs(a.change)).slice(0,12).map(m=>({symbol:m.symbol,change:m.change,note:m.change>0?'Variation 24 h élevée':'Variation 24 h négative',at:lastDataAt}));
-   renderMarkets();renderSignals();$('lastAnalysis').textContent='Dernière analyse : '+new Date(lastDataAt).toLocaleString('fr-FR')+' · prochaine tentative selon mode automatique';
+   renderMarkets();renderSignals();
+   addLog('DATA','BINANCE',`${markets.length} symboles reçus ; ${markets.filter(m=>m.symbol.endsWith('USDT')).length} paires USDT disponibles.`);
+   addLog('INFO','ANALYSE',`Cycle terminé : ${markets.length} symboles parcourus.`);
+   signals.slice(0,5).forEach(sig=>addLog('SIGNAL',sig.symbol,`${sig.note} (${sig.change>0?'+':''}${fmt(sig.change)} % sur 24 h). Signal descriptif uniquement ; aucune transaction exécutée.`));
+   $('lastAnalysis').textContent='Dernière analyse : '+new Date(lastDataAt).toLocaleString('fr-FR')+' · prochaine tentative selon mode automatique';
  }catch(e){
+   addLog('ERROR','BINANCE','Échec de récupération des données : '+(e&&e.message?e.message:'erreur inconnue'));
    setConnection(false,'Source Binance indisponible');$('freshness').textContent='Alerte';$('freshHint').textContent='Actualisation échouée · '+(lastDataAt?'dernières données conservées':'aucune donnée fiable');$('marketUpdated').textContent='Échec actualisation';
    if(lastDataAt && Date.now()-lastDataAt>STALE_MS){$('freshness').textContent='Périmées';$('freshHint').textContent='Dernières données trop anciennes : ne pas les traiter comme actuelles';}
    $('lastAnalysis').textContent='Tentative échouée : '+new Date().toLocaleTimeString('fr-FR');
  }
 }
-function cycle(){if(!botOn)return;refreshData().finally(()=>{if(botOn){nextAt=Date.now()+CYCLE_MS;updateCountdown();timer=setTimeout(cycle,CYCLE_MS);}});}
-function startBot(){if(botOn)return;botOn=true;$('botTag').textContent='EN MARCHE';$('botState').textContent='En marche (automatique)';$('botState').className='auto-state green';$('botDesc').textContent='Analyse périodique activée. La source est vérifiée à chaque cycle ; en cas d’échec, une nouvelle tentative sera effectuée.';$('toggleBot').textContent='■ Arrêter le bot';$('toggleBot').classList.add('danger');nextAt=Date.now()+CYCLE_MS;refreshData().finally(()=>{if(botOn){nextAt=Date.now()+CYCLE_MS;timer=setTimeout(cycle,CYCLE_MS);}});}
-function stopBot(){botOn=false;clearTimeout(timer);$('botTag').textContent='ARRÊTÉ';$('botState').textContent='Bot arrêté';$('botState').className='auto-state';$('botDesc').textContent='Aucune analyse périodique. Les actualisations manuelles restent disponibles.';$('toggleBot').textContent='▶ Activer le bot';$('toggleBot').classList.remove('danger');$('nextRun').textContent='—';}
+function cycle(){if(!botOn)return;addLog('INFO','BOT','Démarrage d’un cycle automatique.');refreshData().finally(()=>{if(botOn){nextAt=Date.now()+CYCLE_MS;updateCountdown();timer=setTimeout(cycle,CYCLE_MS);}});}
+function startBot(){if(botOn)return;botOn=true;addLog('INFO','BOT','Surveillance automatique activée dans cette page.');$('botTag').textContent='EN MARCHE';$('botState').textContent='En marche (automatique)';$('botState').className='auto-state green';$('botDesc').textContent='Analyse périodique activée. La source est vérifiée à chaque cycle ; en cas d’échec, une nouvelle tentative sera effectuée.';$('toggleBot').textContent='■ Arrêter le bot';$('toggleBot').classList.add('danger');nextAt=Date.now()+CYCLE_MS;refreshData().finally(()=>{if(botOn){nextAt=Date.now()+CYCLE_MS;timer=setTimeout(cycle,CYCLE_MS);}});}
+function stopBot(){addLog('WARNING','BOT','Surveillance automatique arrêtée.');botOn=false;clearTimeout(timer);$('botTag').textContent='ARRÊTÉ';$('botState').textContent='Bot arrêté';$('botState').className='auto-state';$('botDesc').textContent='Aucune analyse périodique. Les actualisations manuelles restent disponibles.';$('toggleBot').textContent='▶ Activer le bot';$('toggleBot').classList.remove('danger');$('nextRun').textContent='—';}
 $('toggleBot').addEventListener('click',()=>botOn?stopBot():startBot());
-$('refreshNow').addEventListener('click',()=>refreshData());
+$('refreshNow').addEventListener('click',()=>{addLog('INFO','BOT','Actualisation manuelle demandée.');refreshData();});
+$('logFilter').addEventListener('change',renderLog);$('logSearch').addEventListener('input',renderLog);
+$('clearLog').addEventListener('click',()=>{if(confirm('Effacer le journal local de cet appareil ?')){activityLog=[];try{localStorage.removeItem(LOG_KEY);}catch(e){}renderLog();addLog('INFO','JOURNAL','Journal effacé ; nouvel événement de confirmation ajouté.');}});
+$('exportLog').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(activityLog,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='fx-sentinel-journal-v21.json';a.click();URL.revokeObjectURL(url);});
+
 $('search').addEventListener('input',renderMarkets);$('sort').addEventListener('change',renderMarkets);$('clearSearch').addEventListener('click',()=>{$('search').value='';renderMarkets();});
 $('setTarget').addEventListener('click',()=>{const n=Number($('targetInput').value);if(Number.isFinite(n)&&n>0&&n<=1000000){target=n;renderSim();}else alert('Entre un objectif positif inférieur ou égal à 1 000 000 USDT.');});
 $('resetSim').addEventListener('click',()=>{if(confirm('Réinitialiser les résultats de simulation à 1 000 USDT ?')){sim={start:1000,balance:1000,profit:0,loss:0,saved:0};renderSim();}});
 countdownTimer=setInterval(updateCountdown,1000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden && botOn && (!lastDataAt || Date.now()-lastDataAt>STALE_MS)){clearTimeout(timer);cycle();}});
-renderSim();refreshData();
+renderLog();addLog('INFO','SYSTÈME','FX SENTINEL V2.1 initialisé. Mode observation : aucun ordre réel ni trade simulé automatique.');renderSim();refreshData();
 })();
 </script>
 </body></html>
